@@ -33,7 +33,7 @@ La aplicación es una **versión estática** de una Biblioteca Musical construid
 
 ```bash
 git clone https://github.com/LainerDonet/Modelo27_EBAC.git
-cd biblioteca-musical-react
+cd Modelo27_EBAC
 ```
 
 ### 2. Instalar las dependencias
