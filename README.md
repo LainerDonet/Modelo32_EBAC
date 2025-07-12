@@ -6,7 +6,7 @@ Este proyecto forma parte del **módulo de Introducción a React** del curso de 
 
 La aplicación es una **versión estática** de una Biblioteca Musical construida con **React** utilizando **componentes de clase**. El diseño se inspira en la interfaz de **YouTube Music** y está orientado a practicar los fundamentos esenciales de React: componentes, props, JSX y ciclo de vida.
 
-
+---
 
 ## 🚀 Características del proyecto
 
@@ -91,3 +91,4 @@ Esto abrirá la aplicación en tu navegador en: [http://localhost:3000](http://l
 Este proyecto fue desarrollado como parte de los ejercicios prácticos del curso de Front-End en EBAC.
 
 ---
+
