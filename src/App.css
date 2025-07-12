@@ -1,38 +1,120 @@
+/* src/App.css */
+
+body {
+  margin: 0;
+  background-color: #121212;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
 .App {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.header {
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 2em;
+  color: #fff;
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.logo{
+  width: 50px;
+  height: auto;
+  margin-right: 20px;
+}
+.nav ul {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.nav li {
+  display: flex;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav a {
+  display: flex;
+  align-items: center;
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: none;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav a:hover,
+.nav a:focus {
+  background: #282828;
+  color: #ff0000;
+}
+.song-list {
   display: flex;
   flex-direction: column;
+  gap: 15px;
+}
+.song-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.song {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: #1e1e1e;
+  padding: 15px 20px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.song:hover {
+  background-color: #2a2a2a;
+}
+.song-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.song-details {
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.song-details h2 {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #fff;
+}
+
+.song-details p {
+  margin: 3px 0 0 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+.song-duration {
+  color: #ccc;
+  font-size: 0.9em;
 }

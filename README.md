@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🎵 Biblioteca Musical (React - EBAC)
 
-## Available Scripts
+Este proyecto forma parte del **módulo de Introducción a React** del curso de **Front-End Developer** de la **Escola Britânica de Artes Criativas e Tecnologia (EBAC)**.
 
-In the project directory, you can run:
+La aplicación es una **versión estática** de una Biblioteca Musical construida con **React** utilizando **componentes de clase**. El diseño se inspira en la interfaz de **YouTube Music** y está orientado a practicar los fundamentos esenciales de React: componentes, props, JSX y ciclo de vida.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Características del proyecto
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* ✅ Estructura modular con componentes reutilizables.
+* ✅ Componente `Header` que muestra el título de la aplicación.
+* ✅ Componente `Song` que representa una canción individual (título, artista, duración).
+* ✅ Componente raíz `App` que organiza los demás y muestra varias canciones.
+* ✅ Uso del método `componentDidMount()` para mostrar un mensaje de carga en consola.
+* ✅ Estilos con `App.css` para simular el diseño de YouTube Music.
+* ✅ Datos ficticios para mostrar una lista de canciones de forma estática.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Tecnologías utilizadas
 
-### `npm run build`
+* React (con componentes de clase)
+* JSX
+* CSS3
+* Node.js + npm (para entorno y dependencias)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ⚙️ Instalación y ejecución en local
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. Clonar el repositorio
 
-### `npm run eject`
+```bash
+git clone https://github.com/tu-usuario/biblioteca-musical-react.git
+cd biblioteca-musical-react
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 2. Instalar las dependencias
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 3. Ejecutar la aplicación
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm start
+```
 
-## Learn More
+Esto abrirá la aplicación en tu navegador en: [http://localhost:3000](http://localhost:3000)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📚 Objetivos de aprendizaje
 
-### Code Splitting
+* Comprender la estructura de un proyecto React.
+* Crear componentes de clase y usar `props` para pasar datos.
+* Estilizar componentes con CSS modular.
+* Usar el ciclo de vida básico de los componentes (`componentDidMount`).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📁 Estructura del proyecto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+/src
+│
+├── /components
+│   ├── Header.js      # Componente del encabezado
+│   └── Song.js        # Componente para una canción individual
+│
+├── App.js             # Componente principal
+├── App.css            # Estilos generales
+└── index.js           # Punto de entrada de la app
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 📸 Vista previa
 
-### Advanced Configuration
+> Puedes incluir aquí una captura de pantalla del diseño o una animación (GIF) de la app funcionando.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## ✍️ Autor
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Lainer Felipe Donet Vasconcellos**
+Este proyecto fue desarrollado como parte de los ejercicios prácticos del curso de Front-End en EBAC.
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
