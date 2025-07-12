@@ -1,5 +1,3 @@
----
-
 # 🎵 Biblioteca Musical (React - EBAC)
 
 Este proyecto forma parte del **módulo de Introducción a React** del curso de **Front-End Developer** de la **Escola Britânica de Artes Criativas e Tecnologia (EBAC)**.
