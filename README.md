@@ -1,4 +1,4 @@
-# 🎵 Biblioteca Musical (React - EBAC)
+# 🎵 Biblioteca Musical (ReactII - EBAC)
 
 Este proyecto forma parte del **módulo de Introducción a React** del curso de **Front-End Developer** de la **Escola Britânica de Artes Criativas e Tecnologia (EBAC)**.
 
@@ -33,8 +33,8 @@ La aplicación es una **versión estática** de una Biblioteca Musical construid
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/LainerDonet/Modelo27_EBAC.git
-cd Modelo27_EBAC
+git clone https://github.com/LainerDonet/Modelo28_EBAC.git
+cd Modelo28_EBAC
 ```
 
 ### 2. Instalar las dependencias
