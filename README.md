@@ -2,7 +2,7 @@
 
 Este proyecto forma parte del **módulo de Introducción a React** del curso de **Front-End Developer** de la **Escola Britânica de Artes Criativas e Tecnologia (EBAC)**.
 
-La aplicación es una **versión estática** de una Biblioteca Musical construida con **React** utilizando **componentes de clase**. El diseño se inspira en la interfaz de **YouTube Music** y está orientado a practicar los fundamentos esenciales de React: componentes, props, JSX y ciclo de vida.
+La aplicación es una **versión estática** de una Biblioteca Musical construida con **React** utilizando **componentes de función**. El diseño se inspira en la interfaz de **YouTube Music** y está orientado a practicar los fundamentos esenciales de React: función, hooks como useState y useEffect.
 
 ---
 
@@ -12,7 +12,8 @@ La aplicación es una **versión estática** de una Biblioteca Musical construid
 * ✅ Componente `Header` que muestra el título de la aplicación.
 * ✅ Componente `Song` que representa una canción individual (título, artista, duración).
 * ✅ Componente raíz `App` que organiza los demás y muestra varias canciones.
-* ✅ Uso del método `componentDidMount()` para mostrar un mensaje de carga en consola.
+* ✅ Componente SearchResults `SearchResults` que reciba un array de canciones ficticias como props.
+* ✅ Componente Library `Library` que recibe un array de canciones ficticias como props.
 * ✅ Estilos con `App.css` para simular el diseño de YouTube Music.
 * ✅ Datos ficticios para mostrar una lista de canciones de forma estática.
 
@@ -55,9 +56,8 @@ Esto abrirá la aplicación en tu navegador en: [http://localhost:3000](http://l
 ## 📚 Objetivos de aprendizaje
 
 * Comprender la estructura de un proyecto React.
-* Crear componentes de clase y usar `props` para pasar datos.
+* Crear componentes de función y utilizar hooks como useState y useEffect
 * Estilizar componentes con CSS modular.
-* Usar el ciclo de vida básico de los componentes (`componentDidMount`).
 
 ---
 
@@ -67,8 +67,10 @@ Esto abrirá la aplicación en tu navegador en: [http://localhost:3000](http://l
 /src
 │
 ├── /components
-│   ├── Header.js      # Componente del encabezado
-│   └── Song.js        # Componente para una canción individual
+│   ├── Header.js             # Componente del encabezado
+│   ├── Song.js               # Componente para una canción individual
+|   ├── SearchResults.js      # Componente de Busqueda 
+│   └── Library.js            # Componente para generra biblioteca
 │
 ├── App.js             # Componente principal
 ├── App.css            # Estilos generales
@@ -77,9 +79,6 @@ Esto abrirá la aplicación en tu navegador en: [http://localhost:3000](http://l
 
 ---
 
-## 📸 Vista previa
-
-> Puedes incluir aquí una captura de pantalla del diseño o una animación (GIF) de la app funcionando.
 
 ---
 

@@ -118,3 +118,39 @@ body {
   color: #ccc;
   font-size: 0.9em;
 }
+/* Barra de búsqueda estilo YouTube Music */
+.search-bar {
+  width: 350px;
+  padding: 10px 16px;
+  border-radius: 24px;
+  border: none;
+  background: #222;
+  color: #fff;
+  font-size: 16px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  outline: none;
+  transition: background 0.2s;
+}
+.search-bar:focus {
+  background: #333;
+}
+
+/* Botón estilo YouTube Music */
+.ytmusic-btn {
+  background: linear-gradient(90deg, #ff3c5f 0%, #ff7c2b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: background 0.2s, transform 0.2s;
+}
+.ytmusic-btn:hover {
+  background: linear-gradient(90deg, #ff7c2b 0%, #ff3c5f 100%);
+  transform: scale(1.05);
+}
