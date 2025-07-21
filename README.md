@@ -1,91 +1,57 @@
-# 🎵 Biblioteca Musical (ReactII - EBAC)
+# 🎵 Biblioteca Musical con React y TheAudioDB API
 
-Este proyecto forma parte del **módulo de Introducción a React** del curso de **Front-End Developer** de la **Escola Britânica de Artes Criativas e Tecnologia (EBAC)**.
+Este proyecto forma parte del **módulo de Introducción a React III** del curso de **Front-End Developer** de la **Escola Britânica de Artes Criativas e Tecnologia (EBAC)**.
 
-La aplicación es una **versión estática** de una Biblioteca Musical construida con **React** utilizando **componentes de función**. El diseño se inspira en la interfaz de **YouTube Music** y está orientado a practicar los fundamentos esenciales de React: función, hooks como useState y useEffect.
+Este proyecto es una biblioteca musical construida con React que se conecta dinámicamente a la [API pública TheAudioDB](https://www.theaudiodb.com/api_guide.php) para mostrar información real de artistas, álbumes y canciones. Esta integración mejora la experiencia de usuario, reemplazando datos ficticios por datos reales obtenidos mediante peticiones HTTP.
+
+## 🚀 Funcionalidades implementadas
+
+### 1. 🔗 Conexión con API externa
+- Se integró la API [TheAudioDB](https://www.theaudiodb.com/) para:
+  - Buscar álbumes de un artista.
+  - Consultar detalles de un álbum específico.
+
+### 2. 🧭 Navegación con React Router
+- Se instalaron las dependencias necesarias de `react-router-dom`.
+- Se configuraron las rutas principales:
+  - `/` → Página principal para búsquedas.
+  - `/song/:id` → Página de detalles de una canción.
+
+### 3. 🔍 Componente de búsqueda (`SearchBar`)
+- Input controlado con `useState` para ingresar el nombre del artista.
+- Botón o tecla Enter para activar la búsqueda y realizar la consulta a la API.
+
+### 4. 📡 Hook personalizado `useFetch`
+- Se creó un custom hook para manejar:
+  - Estados de carga.
+  - Errores en peticiones.
+  - Datos obtenidos desde la API.
+
+### 5. 🎧 Resultados (`SearchResults`)
+- Renderiza información básica de las canciones:
+  - Título.
+  - Artista.
+  - Álbum.
+- Incluye enlaces con `<Link>` hacia los detalles de cada canción.
+
+### 6. 📝 Página de detalles (`SongDetail`)
+- Utiliza `useParams()` para obtener el ID desde la URL.
+- Hace una nueva petición a la API para obtener detalles del álbum.
+- Muestra información específica de la canción seleccionada.
+
+### 7. ⚙️ Renderizado condicional
+- Muestra mensajes mientras los datos se están cargando ("Cargando...").
+- Muestra mensajes de error claros si hay fallos en la API.
+- Renderiza contenido solo si los datos están disponibles correctamente.
 
 ---
 
-## 🚀 Características del proyecto
-
-* ✅ Estructura modular con componentes reutilizables.
-* ✅ Componente `Header` que muestra el título de la aplicación.
-* ✅ Componente `Song` que representa una canción individual (título, artista, duración).
-* ✅ Componente raíz `App` que organiza los demás y muestra varias canciones.
-* ✅ Componente SearchResults `SearchResults` que reciba un array de canciones ficticias como props.
-* ✅ Componente Library `Library` que recibe un array de canciones ficticias como props.
-* ✅ Estilos con `App.css` para simular el diseño de YouTube Music.
-* ✅ Datos ficticios para mostrar una lista de canciones de forma estática.
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-* React (con componentes de clase)
-* JSX
-* CSS3
-* Node.js + npm (para entorno y dependencias)
-
----
-
-## ⚙️ Instalación y ejecución en local
-
-### 1. Clonar el repositorio
+## 📦 Instalación y ejecución local
 
 ```bash
-git clone https://github.com/LainerDonet/Modelo28_EBAC.git
-cd Modelo28_EBAC
-```
-
-### 2. Instalar las dependencias
-
-```bash
+git clone https://github.com/LainerDonet/Modulo29_EBAC.git
+cd tu-repositorio
 npm install
-```
-
-### 3. Ejecutar la aplicación
-
-```bash
 npm start
-```
 
-Esto abrirá la aplicación en tu navegador en: [http://localhost:3000](http://localhost:3000)
-
----
-
-## 📚 Objetivos de aprendizaje
-
-* Comprender la estructura de un proyecto React.
-* Crear componentes de función y utilizar hooks como useState y useEffect
-* Estilizar componentes con CSS modular.
-
----
-
-## 📁 Estructura del proyecto
-
-```
-/src
-│
-├── /components
-│   ├── Header.js             # Componente del encabezado
-│   ├── Song.js               # Componente para una canción individual
-|   ├── SearchResults.js      # Componente de Busqueda 
-│   └── Library.js            # Componente para generra biblioteca
-│
-├── App.js             # Componente principal
-├── App.css            # Estilos generales
-└── index.js           # Punto de entrada de la app
-```
-
----
-
-
----
-
-## ✍️ Autor
-
-**Lainer Felipe Donet Vasconcellos**
-Este proyecto fue desarrollado como parte de los ejercicios prácticos del curso de Front-End en EBAC.
-
----
 

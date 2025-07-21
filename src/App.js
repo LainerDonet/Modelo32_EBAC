@@ -1,77 +1,66 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
+import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
+import SongDetail from './components/SongDetail';
 import Library from './components/Library';
+import useFetch from './hooks/useFetch';
 import './App.css';
 
-function App() {
-  // Datos ficticios para resultados de búsqueda
-  const initialSongs = [
-    {
-      title: "Heterocomía",
-      artist: "Belinda",
-      duration: "3:51",
-      imagen: "/img/heterocromia.png"
-    },
-    {
-      title: "Ma Meilleure Ennemie",
-      artist: "Stromae y Pomme",
-      duration: "2:49",
-      imagen: "/img/ma_meilleure.png"
-    },
-    {
-      title: "Not like us",
-      artist: "Kendrick Lamar",
-      duration: "4:45",
-      imagen: "/img/not_like_us.png"
-    }
-  ];
+function HomePage() {
+  const [artist, setArtist] = useState('');
+  const [searchUrl, setSearchUrl] = useState('');
+  
+  const { data, loading, error, retry } = useFetch(searchUrl);
 
-  const [searchResults, setSearchResults] = useState(initialSongs);
-  const [searchTerm, setSearchTerm] = useState("");
+  const handleSearch = (artistName) => {
+    setArtist(artistName);
+    setSearchUrl(`https://www.theaudiodb.com/api/v1/json/2/searchalbum.php?s=${encodeURIComponent(artistName)}`);
+  };
+
+  const albums = data?.album || [];
+
+  return (
+    <>
+      <SearchBar onSearch={handleSearch} loading={loading} />
+      <SearchResults 
+        albums={albums}
+        loading={loading}
+        error={error}
+        onRetry={retry}
+        searchTerm={artist}
+      />
+    </>
+  );
+}
+
+function App() {
+  // Biblioteca personal (mantener funcionalidad existente)
   const [library, setLibrary] = useState([]);
 
   const addToLibrary = (song) => {
     setLibrary((prevLibrary) => [...prevLibrary, song]);
   };
 
-  useEffect(() => {
-    console.log("La aplicación se ha cargado correctamente");
-  }, []);
-
-  useEffect(() => {
-    console.log("La biblioteca se ha actualizado:", library);
-  }, [library]);
-
-  // Filtrar canciones por título
-  const handleSearch = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    setSearchResults(
-      initialSongs.filter(song =>
-        song.title.toLowerCase().includes(term.toLowerCase())
-      )
-    );
-  };
-
   return (
-    <div className="App">
-      <Header />
-      <input
-        type="text"
-        className="search-bar"
-        placeholder="Buscar canción..."
-        value={searchTerm}
-        onChange={handleSearch}
-      />
-      <h2>Resultados de búsqueda</h2>
-      <SearchResults songs={searchResults} onAddToLibrary={addToLibrary} />
-      <h2>Mi biblioteca</h2>
-      <Library songs={library} />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/album/:id" element={<SongDetail />} />
+          <Route path="/library" element={
+            <>
+              <h2>Mi biblioteca</h2>
+              <Library songs={library} />
+            </>
+          } />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
 export default App;
-
