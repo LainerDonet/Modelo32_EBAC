@@ -9,7 +9,7 @@ import Library from './components/Library';
 import useFetch from './hooks/useFetch';
 import './App.css';
 
-function HomePage() {
+function HomePage({ onAddToLibrary }) {
   const [artist, setArtist] = useState('');
   const [searchUrl, setSearchUrl] = useState('');
   
@@ -22,7 +22,7 @@ function HomePage() {
 
   const albums = data?.album || [];
 
-  return (
+ return (
     <>
       <SearchBar onSearch={handleSearch} loading={loading} />
       <SearchResults 
@@ -31,13 +31,13 @@ function HomePage() {
         error={error}
         onRetry={retry}
         searchTerm={artist}
+        onAddToLibrary={onAddToLibrary} // <-- Añadido
       />
     </>
   );
 }
 
 function App() {
-  // Biblioteca personal (mantener funcionalidad existente)
   const [library, setLibrary] = useState([]);
 
   const addToLibrary = (song) => {
@@ -49,7 +49,7 @@ function App() {
       <div className="App">
         <Header />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage onAddToLibrary={addToLibrary} />} />
           <Route path="/album/:id" element={<SongDetail />} />
           <Route path="/library" element={
             <>
