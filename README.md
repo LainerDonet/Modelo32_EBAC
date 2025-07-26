@@ -22,31 +22,22 @@ Los siguientes archivos CSS ya no son necesarios y deben eliminarse:
 
 ```
 src/
+├── App.js                      # Componente principal
+├── index.js                    # Punto de entrada (sin CSS imports)
 ├── styles/
-│   ├── GlobalStyles.js          # Estilos globales
-│   ├── theme.js                 # Tema del proyecto
-│   └── Button.styles.js         # Componentes de botones reutilizables
+│   ├── GlobalStyles.js         # Estilos globales
+│   ├── theme.js               # Tema completo
+│   ├── App.styles.js          # Estilos del App
+│   └── Button.styles.js       # Botones reutilizables
 ├── components/
-│   ├── App/
-│   │   └── App.styles.js
-│   ├── Header/
-│   │   ├── Header.js
-│   │   └── Header.styles.js
-│   ├── SearchBar/
-│   │   ├── SearchBar.js
-│   │   └── SearchBar.styles.js
-│   ├── Song/
-│   │   ├── Song.js
-│   │   └── Song.styles.js
-│   ├── SearchResults/
-│   │   ├── SearchResults.js
-│   │   └── SearchResults.styles.js
-│   ├── SongDetail/
-│   │   ├── SongDetail.js
-│   │   └── SongDetail.styles.js
-│   └── Library/
-│       ├── Library.js
-│       └── Library.styles.js
+│   ├── Header.js & Header.styles.js
+│   ├── SearchBar.js & SearchBar.styles.js
+│   ├── Song.js & Song.styles.js
+│   ├── SearchResults.js & SearchResults.styles.js
+│   ├── SongDetail.js & SongDetail.styles.js
+│   └── Library.js & Library.styles.js
+└── hooks/
+    └── useFetch.js            # Sin cambios
 ```
 
 ## 🎨 Características Implementadas
