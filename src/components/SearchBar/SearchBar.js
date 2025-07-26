@@ -1,5 +1,10 @@
-// src/components/SearchBar.js
+// src/components/SearchBar/SearchBar.js
 import React, { useState } from 'react';
+import {
+  SearchForm,
+  SearchInput,
+  SearchButton
+} from './SearchBar.styles';
 
 function SearchBar({ onSearch, loading }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,24 +23,22 @@ function SearchBar({ onSearch, loading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="search-form">
-      <input
+    <SearchForm onSubmit={handleSubmit}>
+      <SearchInput
         type="text"
-        className="search-bar"
         placeholder="Buscar artista..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyPress={handleKeyPress}
         disabled={loading}
       />
-      <button 
+      <SearchButton 
         type="submit" 
-        className="ytmusic-btn search-btn"
         disabled={loading || !searchTerm.trim()}
       >
         {loading ? 'Buscando...' : 'Buscar'}
-      </button>
-    </form>
+      </SearchButton>
+    </SearchForm>
   );
 }
 

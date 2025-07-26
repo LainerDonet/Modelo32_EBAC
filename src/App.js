@@ -1,15 +1,18 @@
 // src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import SearchBar from './components/SearchBar';
-import SearchResults from './components/SearchResults';
-import SongDetail from './components/SongDetail';
-import Library from './components/Library';
+import { ThemeProvider } from 'styled-components';
+import GlobalStyles from './styles/GlobalStyles';
+import theme from './styles/theme';
+import Header from './components/Header/Header';
+import SearchBar from './components/SearchBar/SearchBar';
+import SearchResults from './components/SearchResults/SearchResults';
+import SongDetail from './components/SongDetail/SongDetail';
+import Library from './components/Library/Library';
 import useFetch from './hooks/useFetch';
-import './App.css';
+import { AppContainer, PageTitle } from './styles/App.styles';
 
-function HomePage({ onAddToLibrary }) {
+function HomePage({ onAddToLibrary, library }) {
   const [artist, setArtist] = useState('');
   const [searchUrl, setSearchUrl] = useState('');
   
@@ -22,7 +25,7 @@ function HomePage({ onAddToLibrary }) {
 
   const albums = data?.album || [];
 
- return (
+  return (
     <>
       <SearchBar onSearch={handleSearch} loading={loading} />
       <SearchResults 
@@ -31,7 +34,8 @@ function HomePage({ onAddToLibrary }) {
         error={error}
         onRetry={retry}
         searchTerm={artist}
-        onAddToLibrary={onAddToLibrary} // <-- Añadido
+        onAddToLibrary={onAddToLibrary}
+        library={library}
       />
     </>
   );
@@ -40,26 +44,40 @@ function HomePage({ onAddToLibrary }) {
 function App() {
   const [library, setLibrary] = useState([]);
 
-  const addToLibrary = (song) => {
-    setLibrary((prevLibrary) => [...prevLibrary, song]);
+  const addToLibrary = (album) => {
+    // Verificar si el álbum ya está en la biblioteca
+    const isAlreadyAdded = library.some(item => item.idAlbum === album.idAlbum);
+    if (!isAlreadyAdded) {
+      setLibrary((prevLibrary) => [...prevLibrary, album]);
+    }
+  };
+
+  const clearLibrary = () => {
+    setLibrary([]);
   };
 
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage onAddToLibrary={addToLibrary} />} />
-          <Route path="/album/:id" element={<SongDetail />} />
-          <Route path="/library" element={
-            <>
-              <h2>Mi biblioteca</h2>
-              <Library songs={library} />
-            </>
-          } />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <BrowserRouter>
+        <AppContainer>
+          <Header />
+          <Routes>
+            <Route 
+              path="/" 
+              element={<HomePage onAddToLibrary={addToLibrary} library={library} />} 
+            />
+            <Route path="/album/:id" element={<SongDetail />} />
+            <Route path="/library" element={
+              <>
+                <PageTitle>Mi biblioteca</PageTitle>
+                <Library albums={library} onClearLibrary={clearLibrary} />
+              </>
+            } />
+          </Routes>
+        </AppContainer>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
