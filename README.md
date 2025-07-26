@@ -11,14 +11,7 @@ Se ha refactorizado completamente el proyecto de React para reemplazar los estil
 ```bash
 npm install styled-components@^6.1.8
 ```
-
-### 2. Archivos Eliminados
-
-Los siguientes archivos CSS ya no son necesarios y deben eliminarse:
-- `src/App.css`
-- `src/index.css` (se mantiene solo para referencia, pero no se importa)
-
-### 3. Nueva Estructura de Archivos
+### 2. Nueva Estructura de Archivos
 
 ```
 src/
