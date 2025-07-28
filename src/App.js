@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { useSelector } from 'react-redux';
 import GlobalStyles from './styles/GlobalStyles';
 import theme from './styles/theme';
 import Header from './components/Header/Header';
@@ -12,9 +13,10 @@ import Library from './components/Library/Library';
 import useFetch from './hooks/useFetch';
 import { AppContainer, PageTitle } from './styles/App.styles';
 
-function HomePage({ onAddToLibrary, library }) {
+function HomePage() {
   const [artist, setArtist] = useState('');
   const [searchUrl, setSearchUrl] = useState('');
+  const library = useSelector(state => state);
   
   const { data, loading, error, retry } = useFetch(searchUrl);
 
@@ -34,7 +36,6 @@ function HomePage({ onAddToLibrary, library }) {
         error={error}
         onRetry={retry}
         searchTerm={artist}
-        onAddToLibrary={onAddToLibrary}
         library={library}
       />
     </>
@@ -42,20 +43,6 @@ function HomePage({ onAddToLibrary, library }) {
 }
 
 function App() {
-  const [library, setLibrary] = useState([]);
-
-  const addToLibrary = (album) => {
-    // Verificar si el álbum ya está en la biblioteca
-    const isAlreadyAdded = library.some(item => item.idAlbum === album.idAlbum);
-    if (!isAlreadyAdded) {
-      setLibrary((prevLibrary) => [...prevLibrary, album]);
-    }
-  };
-
-  const clearLibrary = () => {
-    setLibrary([]);
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -65,13 +52,13 @@ function App() {
           <Routes>
             <Route 
               path="/" 
-              element={<HomePage onAddToLibrary={addToLibrary} library={library} />} 
+              element={<HomePage />} 
             />
             <Route path="/album/:id" element={<SongDetail />} />
             <Route path="/library" element={
               <>
                 <PageTitle>Mi biblioteca</PageTitle>
-                <Library albums={library} onClearLibrary={clearLibrary} />
+                <Library />
               </>
             } />
           </Routes>

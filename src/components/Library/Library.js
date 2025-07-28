@@ -1,6 +1,8 @@
 // src/components/Library/Library.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeSong } from '../../redux/libraryActions';
 import {
   LibraryContainer,
   EmptyLibrary,
@@ -22,7 +24,53 @@ import {
   AlbumYear as SearchAlbumYear
 } from '../SearchResults/SearchResults.styles';
 
-function Library({ albums = [], onClearLibrary }) {
+// Componente para el botón de eliminar individual
+import styled from 'styled-components';
+
+const RemoveButton = styled.button`
+  background: ${({ theme }) => theme.colors.error};
+  color: ${({ theme }) => theme.colors.text.primary};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.sm};
+  font-size: 12px;
+  font-weight: ${({ theme }) => theme.fonts.weights.medium};
+  cursor: pointer;
+  transition: all ${({ theme }) => theme.transitions.fast};
+  position: absolute;
+  top: ${({ theme }) => theme.spacing.sm};
+  right: ${({ theme }) => theme.spacing.sm};
+  opacity: 0;
+  
+  ${SearchAlbumCard}:hover & {
+    opacity: 1;
+  }
+  
+  &:hover {
+    background: #ff5252;
+    transform: scale(1.05);
+  }
+`;
+
+const LibraryAlbumCard = styled(SearchAlbumCard)`
+  position: relative;
+`;
+
+function Library() {
+  const albums = useSelector(state => state);
+  const dispatch = useDispatch();
+
+  const handleRemoveSong = (albumId) => {
+    dispatch(removeSong(albumId));
+  };
+
+  const handleClearLibrary = () => {
+    // Eliminar todos los álbumes uno por uno
+    albums.forEach(album => {
+      dispatch(removeSong(album.idAlbum));
+    });
+  };
+
   if (albums.length === 0) {
     return (
       <LibraryContainer>
@@ -43,14 +91,14 @@ function Library({ albums = [], onClearLibrary }) {
         <StatsText>
           <strong>{albums.length}</strong> {albums.length === 1 ? 'álbum' : 'álbumes'} en tu biblioteca
         </StatsText>
-        <ClearButton onClick={onClearLibrary}>
+        <ClearButton onClick={handleClearLibrary}>
           Limpiar biblioteca
         </ClearButton>
       </LibraryStats>
       
       <SearchAlbumsGrid>
         {albums.map((album) => (
-          <SearchAlbumCard key={album.idAlbum}>
+          <LibraryAlbumCard key={album.idAlbum}>
             <SearchAlbumLink as={Link} to={`/album/${album.idAlbum}`}>
               <SearchAlbumCover>
                 <SearchAlbumImage 
@@ -67,7 +115,17 @@ function Library({ albums = [], onClearLibrary }) {
                 <SearchAlbumYear>{album.intYearReleased || 'Año desconocido'}</SearchAlbumYear>
               </SearchAlbumInfo>
             </SearchAlbumLink>
-          </SearchAlbumCard>
+            <RemoveButton 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleRemoveSong(album.idAlbum);
+              }}
+              title="Eliminar de la biblioteca"
+            >
+              ✕
+            </RemoveButton>
+          </LibraryAlbumCard>
         ))}
       </SearchAlbumsGrid>
     </LibraryContainer>

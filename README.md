@@ -1,150 +1,260 @@
-# Refactorización a Styled-Components
+# Migración a Redux - Biblioteca Musical
 
 ## 📋 Resumen de Cambios
 
-Se ha refactorizado completamente el proyecto de React para reemplazar los estilos CSS tradicionales con styled-components, organizando mejor los estilos y agregando funcionalidad dinámica basada en props.
+Se ha implementado **Redux** para gestionar el estado global de la biblioteca musical personalizada del usuario. Esta migración permite un manejo más robusto y escalable del estado, especialmente para las funcionalidades de agregar y eliminar álbumes de la biblioteca.
 
-## 🚀 Instalación
+## 🚀 Nuevas Dependencias
 
-### 1. Instalar Styled-Components
-
+### Dependencias Agregadas
 ```bash
-npm install styled-components@^6.1.8
-```
-### 2. Nueva Estructura de Archivos
-
-```
-src/
-├── App.js                      # Componente principal
-├── index.js                    # Punto de entrada (sin CSS imports)
-├── styles/
-│   ├── GlobalStyles.js         # Estilos globales
-│   ├── theme.js               # Tema completo
-│   ├── App.styles.js          # Estilos del App
-│   └── Button.styles.js       # Botones reutilizables
-├── components/
-│   ├── Header.js & Header.styles.js
-│   ├── SearchBar.js & SearchBar.styles.js
-│   ├── Song.js & Song.styles.js
-│   ├── SearchResults.js & SearchResults.styles.js
-│   ├── SongDetail.js & SongDetail.styles.js
-│   └── Library.js & Library.styles.js
-└── hooks/
-    └── useFetch.js            # Sin cambios
+npm install redux@^5.0.1 react-redux@^9.1.0
 ```
 
-## 🎨 Características Implementadas
-
-### 1. Tema Global (YouTube Music Style)
-
-- **Colores**: Esquema oscuro inspirado en YouTube Music
-- **Tipografía**: Roboto con diferentes pesos
-- **Espaciado**: Sistema consistente de espaciado
-- **Breakpoints**: Responsive design
-- **Animaciones**: Transiciones suaves
-
-### 2. Estilos Dinámicos con Props
-
-#### Ejemplos de Props Implementadas:
-
-**Song Component:**
-```javascript
-<Song 
-  title="Ma Meilleure Ennemie" 
-  artist="Stromae y Pomme" 
-  duration="2:49" 
-  imagen="/img/ma_meilleure.png" 
-  isHighlighted={true}  // ← Prop dinámica
-/>
-```
-
-**Navigation Links:**
-```javascript
-<NavLink 
-  to="/library" 
-  $isActive={location.pathname === '/library'}  // ← Prop dinámica
->
-  Mi Biblioteca
-</NavLink>
-```
-
-**Add to Library Button:**
-```javascript
-<AddToLibraryButton 
-  $isAdded={isAlbumInLibrary(album.idAlbum)}  // ← Prop dinámica
-  onClick={() => !isAdded && onAddToLibrary(album)}
->
-  {isAdded ? 'Ya en biblioteca' : 'Añadir a biblioteca'}
-</AddToLibraryButton>
-```
-
-### 3. Funcionalidades Mejoradas
-
-- **Biblioteca Personal**: Los álbumes se pueden agregar y no se duplican
-- **Estados Visuales**: Indicadores visuales cuando un álbum ya está en biblioteca
-- **Animaciones**: Hover effects y transiciones suaves
-- **Responsive**: Diseño adaptable a diferentes pantallas
-- **Accesibilidad**: Focus states y contrastes mejorados
-
-## 🛠️ Guía de Uso
-
-### 1. Usando el Tema
-
-```javascript
-import { ThemeProvider } from 'styled-components';
-import theme from './styles/theme';
-
-function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      {/* Tu aplicación */}
-    </ThemeProvider>
-  );
+### package.json actualizado
+```json
+{
+  "dependencies": {
+    "redux": "^5.0.1",
+    "react-redux": "^9.1.0"
+  }
 }
 ```
 
-### 2. Creando Componentes Estilizados
+## 🏗️ Nueva Estructura Redux
 
+### Carpeta `src/redux/`
+```
+src/redux/
+├── store.js              # Configuración del store Redux
+├── libraryActions.js     # Action creators y types
+└── libraryReducer.js     # Reducer para la biblioteca
+```
+
+### 1. Store (`src/redux/store.js`)
 ```javascript
-import styled from 'styled-components';
+import { createStore } from 'redux';
+import libraryReducer from './libraryReducer';
 
-const StyledComponent = styled.div`
-  background: ${({ theme }) => theme.colors.background.primary};
-  color: ${({ theme, $isActive }) => 
-    $isActive ? theme.colors.accent.primary : theme.colors.text.primary};
-  padding: ${({ theme }) => theme.spacing.lg};
-  
-  &:hover {
-    background: ${({ theme }) => theme.colors.background.secondary};
+const store = createStore(
+  libraryReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+```
+
+**Características:**
+- Configurado con Redux DevTools
+- Usa `libraryReducer` como reducer principal
+- Exportado para uso global
+
+### 2. Actions (`src/redux/libraryActions.js`)
+```javascript
+export const ADD_SONG = 'ADD_SONG';
+export const REMOVE_SONG = 'REMOVE_SONG';
+
+export const addSong = (song) => ({
+  type: ADD_SONG,
+  payload: song
+});
+
+export const removeSong = (songId) => ({
+  type: REMOVE_SONG,
+  payload: songId
+});
+```
+
+**Funcionalidades:**
+- `ADD_SONG`: Agregar álbum/canción a la biblioteca
+- `REMOVE_SONG`: Eliminar álbum/canción por ID
+- Action creators con payload estructurado
+
+### 3. Reducer (`src/redux/libraryReducer.js`)
+```javascript
+const initialState = [];
+
+const libraryReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_SONG:
+      // Verificar duplicados
+      const songExists = state.some(song => song.idAlbum === action.payload.idAlbum);
+      if (songExists) return state;
+      return [...state, action.payload];
+      
+    case REMOVE_SONG:
+      return state.filter(song => song.idAlbum !== action.payload);
+      
+    default:
+      return state;
   }
-`;
+};
 ```
 
-### 3. Props Dinámicas
+**Características:**
+- Estado inicial: array vacío
+- Prevención de duplicados automática
+- Inmutabilidad garantizada
+- Filtrado por ID para eliminación
 
-Usa el prefijo `$` para props que no deben pasarse al DOM:
+## 🔗 Integración con Componentes
 
+### 4. Provider Setup (`src/index.js`)
 ```javascript
-const DynamicButton = styled.button`
-  background: ${({ theme, $variant }) => 
-    $variant === 'primary' ? theme.colors.accent.gradient : theme.colors.neutral.gradient};
-  opacity: ${({ $isDisabled }) => $isDisabled ? 0.6 : 1};
-`;
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
-// Uso
-<DynamicButton $variant="primary" $isDisabled={false}>
-  Click me
-</DynamicButton>
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
 ```
 
-## 🎯 Beneficios de la Refactorización
+**Cambios:**
+- ✅ Aplicación envuelta con `Provider`
+- ✅ Store disponible globalmente
+- ✅ Todos los componentes tienen acceso a Redux
 
-1. **Organización**: Cada componente tiene sus propios estilos
-2. **Reutilización**: Tema y componentes reutilizables
-3. **Dinamismo**: Estilos que cambian según props y estado
-4. **Mantenibilidad**: Código más limpio y fácil de mantener
-5. **Performance**: CSS-in-JS optimizado
-6. **Developer Experience**: IntelliSense y TypeScript support
+### 5. App.js - Eliminación de Estado Local
+```javascript
+// ANTES: Estado local
+const [library, setLibrary] = useState([]);
+
+// DESPUÉS: Redux
+const library = useSelector(state => state);
+```
+
+**Cambios:**
+- ❌ Eliminado `useState` para biblioteca
+- ❌ Eliminado `addToLibrary` y `clearLibrary`
+- ✅ Uso de `useSelector` para acceder al estado
+- ✅ Componentes reciben datos del store Redux
+
+### 6. SearchResults.js - Dispatch de Acciones
+```javascript
+import { useDispatch } from 'react-redux';
+import { addSong } from '../../redux/libraryActions';
+
+const dispatch = useDispatch();
+
+const handleAddToLibrary = (album) => {
+  if (!isAlbumInLibrary(album.idAlbum)) {
+    dispatch(addSong(album));
+  }
+};
+```
+
+**Funcionalidades:**
+- ✅ `useDispatch` para despachar acciones
+- ✅ `handleAddToLibrary` usa Redux en lugar de props
+- ✅ Verificación de duplicados con estado Redux
+- ✅ UI actualizada automáticamente
+
+### 7. Library.js - Gestión Completa con Redux
+```javascript
+import { useSelector, useDispatch } from 'react-redux';
+import { removeSong } from '../../redux/libraryActions';
+
+const albums = useSelector(state => state);
+const dispatch = useDispatch();
+
+const handleRemoveSong = (albumId) => {
+  dispatch(removeSong(albumId));
+};
+
+const handleClearLibrary = () => {
+  albums.forEach(album => {
+    dispatch(removeSong(album.idAlbum));
+  });
+};
+```
+
+**Nuevas funcionalidades:**
+- ✅ Botón "✕" individual en cada álbum
+- ✅ Eliminar álbum específico con `dispatch(removeSong)`
+- ✅ "Limpiar biblioteca" elimina todos los álbumes
+- ✅ Estado sincronizado automáticamente
+
+## 🎯 Funcionalidades Implementadas
+
+### ✅ Gestión de Biblioteca
+- **Agregar álbumes**: Click en "Añadir a biblioteca"
+- **Eliminar individual**: Botón "✕" en cada álbum
+- **Limpiar todo**: Botón "Limpiar biblioteca"
+- **Prevención de duplicados**: Verificación automática por ID
+
+### ✅ Estado Global
+- **Persistencia**: Estado mantenido durante navegación
+- **Sincronización**: Todos los componentes se actualizan automáticamente
+- **Inmutabilidad**: Estado Redux nunca se muta directamente
+
+### ✅ Interfaz de Usuario
+- **Estados visuales**: Botones muestran si álbum está agregado
+- **Feedback inmediato**: UI se actualiza instantáneamente
+- **Hover effects**: Botón eliminar visible al pasar mouse
+
+## 🛠️ Guía de Instalación
+
+### 1. Instalar Dependencias
+```bash
+npm install redux react-redux
+```
+
+### 2. Crear Estructura Redux
+```bash
+mkdir src/redux
+# Crear archivos: store.js, libraryActions.js, libraryReducer.js
+```
+
+### 3. Actualizar Archivos Existentes
+- `src/index.js` → Agregar Provider
+- `src/App.js` → Integrar useSelector
+- `src/components/SearchResults/SearchResults.js` → Agregar useDispatch
+- `src/components/Library/Library.js` → Integrar Redux completo
+
+### 4. Verificar Funcionamiento
+```bash
+npm start
+```
+
+## 📱 Flujo de Usuario
+
+### Agregar Álbumes
+1. Usuario busca artista
+2. Aparecen álbumes en resultados
+3. Click en "Añadir a biblioteca"
+4. Redux despacha `ADD_SONG`
+5. Reducer agrega álbum (si no existe)
+6. UI se actualiza automáticamente
+
+### Eliminar Álbumes
+1. Usuario va a "Mi Biblioteca"
+2. Ve álbumes guardados
+3. Hover sobre álbum → aparece botón "✕"
+4. Click en "✕" → Redux despacha `REMOVE_SONG`
+5. Reducer filtra y elimina álbum
+6. UI se actualiza automáticamente
+
+## 🎨 Beneficios de la Migración
+
+### 🚀 Performance
+- Estado centralizado reduce re-renders innecesarios
+- Componentes solo se actualizan cuando cambia su parte del estado
+
+### 🧩 Escalabilidad
+- Fácil agregar nuevas funcionalidades (favoritos, playlists, etc.)
+- Estado predecible y debuggeable
+
+### 🔧 Mantenibilidad
+- Lógica de estado separada de componentes
+- Actions y reducers reutilizables
+- Redux DevTools para debugging
+
+### 🎯 UX Mejorada
+- Sincronización automática entre componentes
+- Estado persistente durante navegación
+- Feedback visual inmediato
 
 ## 🚦 Comandos de Desarrollo
 
@@ -152,41 +262,30 @@ const DynamicButton = styled.button`
 # Instalar dependencias
 npm install
 
-# Ejecutar en desarrollo
+# Desarrollo con Redux DevTools
 npm start
 
-# Construir para producción
+# Build para producción
 npm run build
 
-# Ejecutar tests
-npm test
+# Limpiar y reinstalar (si hay problemas)
+rm -rf node_modules package-lock.json
+npm install
 ```
 
-## 📱 Características Responsive
+## 🛡️ Características de Seguridad
 
-- **Mobile First**: Diseño optimizado para móviles
-- **Breakpoints**: 768px (mobile), 1024px (tablet), 1200px (desktop)
-- **Grid Responsive**: Albums grid se adapta automáticamente
-- **Navigation**: Menu responsive en móviles
+- **Prevención de duplicados**: Reducer verifica IDs existentes
+- **Inmutabilidad**: Estado nunca se modifica directamente
+- **Validación**: Actions tienen estructura consistente
+- **Estado predecible**: Cada action produce resultado esperado
 
-## 🎨 Paleta de Colores
+## 📊 Redux DevTools
 
-```javascript
-// Backgrounds
-primary: '#121212'    // Fondo principal
-secondary: '#1e1e1e'  // Cards y elementos
-tertiary: '#2a2a2a'   // Hover states
+La aplicación incluye soporte para Redux DevTools:
+- Instala la extensión Redux DevTools en tu navegador
+- Inspecciona el estado en tiempo real
+- Reproduce acciones (time-travel debugging)
+- Monitorea dispatches y cambios de estado
 
-// Texto
-primary: '#fff'       // Texto principal
-secondary: '#aaa'     // Texto secundario
-muted: '#888'         // Texto deshabilitado
-
-// Accent (YouTube Music Style)
-primary: '#ff0000'    // Rojo principal
-secondary: '#ff3c5f'  // Rojo claro
-gradient: 'linear-gradient(90deg, #ff3c5f 0%, #ff7c2b 100%)'
-```
-
-¡La refactorización está completa y lista para usar! 🎉
-
+¡La migración a Redux está completa y la aplicación está lista para usar! 🎉

@@ -1,6 +1,8 @@
 // src/components/SearchResults/SearchResults.js
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import Song from '../Song/Song';
+import { addSong } from '../../redux/libraryActions';
 import {
   LoadingContainer,
   LoadingText,
@@ -24,10 +26,19 @@ import {
   RetryButton
 } from './SearchResults.styles';
 
-function SearchResults({ albums, loading, error, onRetry, searchTerm, onAddToLibrary, library = [] }) {
+function SearchResults({ albums, loading, error, onRetry, searchTerm, library = [] }) {
+  const dispatch = useDispatch();
+
   // Función para verificar si un álbum ya está en la biblioteca
   const isAlbumInLibrary = (albumId) => {
     return library.some(item => item.idAlbum === albumId);
+  };
+
+  // Función para agregar álbum a la biblioteca usando Redux
+  const handleAddToLibrary = (album) => {
+    if (!isAlbumInLibrary(album.idAlbum)) {
+      dispatch(addSong(album));
+    }
   };
 
   // Canciones estáticas que siempre se muestran
@@ -137,7 +148,7 @@ function SearchResults({ albums, loading, error, onRetry, searchTerm, onAddToLib
                 </AlbumLink>
                 <AddToLibraryButton 
                   $isAdded={isAdded}
-                  onClick={() => !isAdded && onAddToLibrary(album)}
+                  onClick={() => handleAddToLibrary(album)}
                   disabled={isAdded}
                 >
                   {isAdded ? 'Ya en biblioteca' : 'Añadir a biblioteca'}
