@@ -1,10 +1,16 @@
-import { createStore } from 'redux';
-import libraryReducer from './libraryReducer';
+// src/redux/store.js
+import { configureStore } from '@reduxjs/toolkit';
+import libraryReducer from './slices/librarySlice';
+import searchReducer from './slices/searchSlice';
 
-const store = createStore(
-  libraryReducer,
-  // Redux DevTools Extension support
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+// Configurar el store con Redux Toolkit
+const store = configureStore({
+  reducer: {
+    library: libraryReducer,
+    search: searchReducer
+  },
+  // Redux DevTools está incluido por defecto en configureStore
+  devTools: process.env.NODE_ENV !== 'production'
+});
 
 export default store;

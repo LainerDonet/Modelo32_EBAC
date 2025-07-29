@@ -2,7 +2,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import Song from '../Song/Song';
-import { addSong } from '../../redux/libraryActions';
+import { addSong } from '../../redux/slices/librarySlice';
+import { fetchSongs } from '../../redux/slices/searchSlice';
 import {
   LoadingContainer,
   LoadingText,
@@ -26,7 +27,7 @@ import {
   RetryButton
 } from './SearchResults.styles';
 
-function SearchResults({ albums, loading, error, onRetry, searchTerm, library = [] }) {
+function SearchResults({ albums, loading, error, searchTerm, library = [] }) {
   const dispatch = useDispatch();
 
   // Función para verificar si un álbum ya está en la biblioteca
@@ -34,10 +35,17 @@ function SearchResults({ albums, loading, error, onRetry, searchTerm, library = 
     return library.some(item => item.idAlbum === albumId);
   };
 
-  // Función para agregar álbum a la biblioteca usando Redux
+  // Función para agregar álbum a la biblioteca usando Redux Toolkit
   const handleAddToLibrary = (album) => {
     if (!isAlbumInLibrary(album.idAlbum)) {
       dispatch(addSong(album));
+    }
+  };
+
+  // Función para reintentar la búsqueda
+  const handleRetry = () => {
+    if (searchTerm) {
+      dispatch(fetchSongs(searchTerm));
     }
   };
 
@@ -48,6 +56,7 @@ function SearchResults({ albums, loading, error, onRetry, searchTerm, library = 
     { title: "Not like us", artist: "Kendrick Lamar", duration: "4:45", imagen: "/img/not_like_us.png", isHighlighted: false }
   ];
 
+  // Renderizado condicional: Cargando
   if (loading) {
     return (
       <LoadingContainer>
@@ -56,6 +65,7 @@ function SearchResults({ albums, loading, error, onRetry, searchTerm, library = 
     );
   }
 
+  // Renderizado condicional: Error
   if (error) {
     return (
       <>
@@ -72,13 +82,14 @@ function SearchResults({ albums, loading, error, onRetry, searchTerm, library = 
           ))}
         </SongList>
         <ErrorContainer>
-          <ErrorText>Ocurrió un error al buscar los álbumes.</ErrorText>
-          <RetryButton onClick={onRetry}>Reintentar</RetryButton>
+          <ErrorText>Ocurrió un error al buscar los álbumes: {error}</ErrorText>
+          <RetryButton onClick={handleRetry}>Reintentar</RetryButton>
         </ErrorContainer>
       </>
     );
   }
 
+  // Renderizado condicional: Sin resultados
   if (!albums || albums.length === 0) {
     return (
       <>
@@ -107,6 +118,7 @@ function SearchResults({ albums, loading, error, onRetry, searchTerm, library = 
     );
   }
 
+  // Renderizado: Resultados encontrados
   return (
     <>
       <SongList>

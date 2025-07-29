@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeSong } from '../../redux/libraryActions';
+import { removeSong } from '../../redux/slices/librarySlice';
 import {
   LibraryContainer,
   EmptyLibrary,
@@ -57,10 +57,12 @@ const LibraryAlbumCard = styled(SearchAlbumCard)`
 `;
 
 function Library() {
-  const albums = useSelector(state => state);
+  // Usar useSelector para acceder al estado de la biblioteca
+  const albums = useSelector(state => state.library);
   const dispatch = useDispatch();
 
   const handleRemoveSong = (albumId) => {
+    // Usar dispatch para despachar la acción removeSong
     dispatch(removeSong(albumId));
   };
 

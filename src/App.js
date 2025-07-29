@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -10,32 +10,21 @@ import SearchBar from './components/SearchBar/SearchBar';
 import SearchResults from './components/SearchResults/SearchResults';
 import SongDetail from './components/SongDetail/SongDetail';
 import Library from './components/Library/Library';
-import useFetch from './hooks/useFetch';
 import { AppContainer, PageTitle } from './styles/App.styles';
 
 function HomePage() {
-  const [artist, setArtist] = useState('');
-  const [searchUrl, setSearchUrl] = useState('');
-  const library = useSelector(state => state);
-  
-  const { data, loading, error, retry } = useFetch(searchUrl);
-
-  const handleSearch = (artistName) => {
-    setArtist(artistName);
-    setSearchUrl(`https://www.theaudiodb.com/api/v1/json/2/searchalbum.php?s=${encodeURIComponent(artistName)}`);
-  };
-
-  const albums = data?.album || [];
+  // Usar useSelector para acceder al estado de Redux Toolkit
+  const library = useSelector(state => state.library);
+  const { results, loading, error, searchTerm } = useSelector(state => state.search);
 
   return (
     <>
-      <SearchBar onSearch={handleSearch} loading={loading} />
+      <SearchBar />
       <SearchResults 
-        albums={albums}
+        albums={results}
         loading={loading}
         error={error}
-        onRetry={retry}
-        searchTerm={artist}
+        searchTerm={searchTerm}
         library={library}
       />
     </>
